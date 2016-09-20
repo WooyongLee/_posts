@@ -1,0 +1,102 @@
+package com.example.b206ea03.myapplication;
+
+import android.os.Bundle;
+import android.support.annotation.IntegerRes;
+import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends ActionBarActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        String text;
+        int temp = 0; // EditText에 있는 텍스트를 받아올 임시변수
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        final EditText editText = (EditText) findViewById(R.id.inputText);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    Toast.makeText(getApplicationContext(), editText.getText(), Toast.LENGTH_SHORT).show();
+                    handled = true;
+                    temp = Integer.parseInt((editText.getText()).toString());
+                }
+                //setText, getText는 String객체가 아니라 charSequence text이므로 필요시 string으로 변환을 하거나 해야함
+                return handled;
+            }
+        });
+    }
+    public void onRadioButtonClieked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.Celsius :
+                // 1. editText에 사용자가 입력한 값을 읽는다
+                // getText()
+                // 2. 숫자 변환
+                // 3. 선택된 라디오버튼 확인(이벤트 확인)
+                // 4. if(radioButton == Celsius) 섭씨 = 화씨에 머시기
+                //    else  화씨 = 섭씨에 머시기
+                // 5. 결과 값을 TextZView 객체에 표시
+                // setText() tv.setText(.......)
+                if (checked)
+                    Toast.makeText(getApplicationContext(), "Celsius Selected",  Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.Fahrenheit :
+                if (checked)
+                    Toast.makeText(getApplicationContext(), "Fahrenheit Selected",  Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+}
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical" tools:context=".MainActivity">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputText"
+        android:inputType="number"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Celsius"
+            android:onClick="onRadioButtonClicked"
+            android:text="Celsius"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Fahrenheit"
+            android:onClick="onRadioButtonClicked"
+            android:text="Fahrenheit"/>
+    </RadioGroup>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/convertButton"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/ViewText"/>
+
+
+</LinearLayout>
