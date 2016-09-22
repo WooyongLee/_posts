@@ -1,0 +1,77 @@
+package com.example.b206ea03.myapplication;
+
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+class MainActivity extends ActionBarActivity {
+    int radiobuttonControl = 0;
+    EditText editText;
+    TextView viewText;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        editText = (EditText) findViewById(R.id.inputText);
+        viewText = (TextView) findViewById(R.id.ViewText);
+    }
+
+    public void onConvertButtonClicked(View view) {
+        float result = 0;
+        CharSequence temp = editText.getText(); // charSequence Type 의 사용자가 입력한 값 textEdit의 text를 temp에 저장
+        float value = Float.parseFloat(temp.toString()); // 저장된 text를 실수형으로 변환
+
+        switch( view.getId() ) {
+            case R.id.convertButton:
+                if ( radiobuttonControl == 0 ) { // 섭씨변환 선택
+                    result = ( ( value - 32 ) * 5 ) / 9;
+                }
+
+                else if ( radiobuttonControl == 1 ) { // 화씨변환 선택
+                    result = ( ( value * 9 ) / 5 ) + 32;
+                }
+                else
+                    viewText.setText(null);
+
+                break;
+        }
+        String tempString = String.valueOf(result);
+        viewText.setText(tempString);
+    }
+
+    public void onRadioButtonClicked(View view) {
+        RadioButton fahrenheitButton = (RadioButton) findViewById(R.id.Fahrenheit);
+        RadioButton celsiusButton = (RadioButton) findViewById(R.id.Celsius);
+        boolean checked = ((RadioButton) view).isChecked();
+        switch ( view.getId() ) {
+            case R.id.Celsius:
+                if (checked) {
+                    radiobuttonControl = 0; // 섭씨 선택 ( 0 )
+                    Toast.makeText(getApplicationContext(), "Celsius Selected " + radiobuttonControl, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.Fahrenheit:
+                if (checked) {
+                    radiobuttonControl = 1; // 화씨 선택 ( 1 )
+                    Toast.makeText(getApplicationContext(), "Fahrenheit Selected "+ radiobuttonControl, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+}
+    // 1. editText에 사용자가 입력한 값을 읽는다
+    // getText()
+    // 2. 숫자 변환
+    // 3. 선택된 라디오버튼 확인(이벤트 확인)
+    // 4. if(radioButton == Celsius) 섭씨 = 화씨에 머시기
+    //    else  화씨 = 섭씨에 머시기
+    // 5. 결과 값을 TextZView 객체에 표시
+    // setText() tv.setText(.......)
+
+
